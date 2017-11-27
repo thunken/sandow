@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.thunken</groupId>
 	<artifactId>sandow</artifactId>
-	<version>0.1</version>
+	<version>1.0.0</version>
 	<properties>
 		<java.version>1.8</java.version>
 		<java.source>${java.version}</java.source>
@@ -19,10 +19,18 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>3.7.0</version>
 				<configuration>
 					<source>${java.source}</source>
 					<target>${java.target}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.0-M1</version>
+				<configuration>
+					<reportOutputDirectory>${project.basedir}</reportOutputDirectory>
+					<destDir>docs</destDir>
 				</configuration>
 			</plugin>
 		</plugins>

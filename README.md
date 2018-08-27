@@ -6,7 +6,7 @@
 
 [![Release](https://jitpack.io/v/thunken/sandow.svg?style=flat-square)](https://github.com/thunken/sandow/releases)
 
-To add a dependency on this project using Gradle, Maven, sbt, or Leiningen, we recommend using [JitPack](https://jitpack.io/#thunken/sandow/v1.0.0). The Maven group ID is `com.github.thunken`, and the artifact ID is `sandow`.
+To add a dependency on this project using Gradle, Maven, sbt, or Leiningen, we recommend using [JitPack](https://jitpack.io/#thunken/sandow/v1.0.1). The Maven group ID is `com.github.thunken`, and the artifact ID is `sandow`.
 
 For example, for Maven, first add the JitPack repository to your build file:
 ```xml
@@ -23,6 +23,6 @@ And then add the dependency:
 	<dependency>
 	    <groupId>com.github.thunken</groupId>
 	    <artifactId>sandow</artifactId>
-	    <version>v1.0.0</version>
+	    <version>v1.0.1</version>
 	</dependency>
 ```

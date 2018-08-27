@@ -11,9 +11,8 @@ import lombok.Builder;
 import lombok.NonNull;
 
 /**
- * Specialized implementation of {@code Spliterator} that uses pagination with
- * {@code from} and {@code size} to retrieve potentially large numbers of
- * results from a single search request in an Elasticsearch index.
+ * Specialized implementation of {@code Spliterator} that uses pagination with {@code from} and {@code size} to retrieve
+ * potentially large numbers of results from a single search request in an Elasticsearch index.
  *
  * <p>
  * See <a href=
@@ -30,15 +29,15 @@ public class PaginatingSearchHitSpliterator extends SearchHitSpliterator {
 	@NonNull
 	private final SearchRequestBuilder searchRequest;
 
-	@Builder.Default
-	private int size = 10;
+	private final int size;
 
 	@Builder
+	@SuppressWarnings("unused")
 	private PaginatingSearchHitSpliterator(@NonNull final SearchRequestBuilder searchRequest, final int from,
-			final int size) {
-		super(searchRequest.setFrom(from).setSize(size).execute());
+			final Integer size) {
+		super(searchRequest.setFrom(from).setSize(getSize(size)).execute());
 		this.from = from;
-		this.size = size;
+		this.size = getSize(size);
 		this.searchRequest = searchRequest;
 	}
 

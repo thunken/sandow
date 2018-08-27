@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import org.elasticsearch.action.ListenableActionFuture;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.Nullable;
 import org.elasticsearch.search.SearchHit;
 
 import lombok.AccessLevel;
@@ -13,8 +14,8 @@ import lombok.NonNull;
 import lombok.Synchronized;
 
 /**
- * Base class for implementations of {@code Spliterator} that retrieve
- * potentially large numbers of results from an Elasticsearch index.
+ * Base class for implementations of {@code Spliterator} that retrieve potentially large numbers of results from an
+ * Elasticsearch index.
  *
  * @see SearchHit
  * @see Spliterator
@@ -37,16 +38,10 @@ public abstract class SearchHitSpliterator implements Spliterator<SearchHit> {
 		return Spliterator.DISTINCT | Spliterator.NONNULL | Spliterator.ORDERED;
 	}
 
-	protected void close() {
-		/* NO OP */
-	}
-
 	@Override
 	public long estimateSize() {
 		return Long.MAX_VALUE;
 	}
-
-	protected abstract ListenableActionFuture<? extends SearchResponse> getNextBatch(SearchResponse searchResponse);
 
 	@Override
 	@Synchronized
@@ -77,8 +72,18 @@ public abstract class SearchHitSpliterator implements Spliterator<SearchHit> {
 		return null;
 	}
 
+	protected void close() {
+		/* NO OP */
+	}
+
+	protected abstract ListenableActionFuture<? extends SearchResponse> getNextBatch(SearchResponse searchResponse);
+
 	protected void update(@NonNull final SearchHit searchHit) {
 		/* NO OP */
+	}
+
+	protected static int getSize(@Nullable final Integer size) {
+		return size == null ? 10 : size;
 	}
 
 }

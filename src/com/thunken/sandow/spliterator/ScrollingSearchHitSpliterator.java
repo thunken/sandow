@@ -6,6 +6,7 @@ import org.elasticsearch.action.ListenableActionFuture;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.common.Nullable;
 import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.SearchHit;
 
@@ -14,13 +15,12 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Specialized implementation of {@code Spliterator} that uses scrolling to
- * retrieve potentially large numbers of results from a single search request in
- * an Elasticsearch index.
+ * Specialized implementation of {@code Spliterator} that uses scrolling to retrieve potentially large numbers of
+ * results from a single search request in an Elasticsearch index.
  *
  * <p>
- * See <a href=
- * "https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html">Elasticsearch
+ * See
+ * <a href= "https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html">Elasticsearch
  * Reference: Scroll</a> for more information.
  *
  * @see SearchHit
@@ -37,13 +37,11 @@ public class ScrollingSearchHitSpliterator extends SearchHitSpliterator {
 
 	private String scrollId;
 
-	@Builder.Default
-	private int size = 10;
-
 	@Builder
+	@SuppressWarnings("unused")
 	private ScrollingSearchHitSpliterator(@NonNull final SearchRequestBuilder searchRequest,
-			@NonNull final Client client, @NonNull final Scroll scroll, final int size) {
-		super(searchRequest.setScroll(scroll).setSize(size).execute());
+			@NonNull final Client client, @NonNull final Scroll scroll, @Nullable final Integer size) {
+		super(searchRequest.setScroll(scroll).setSize(size == null ? 10 : size).execute());
 		this.client = client;
 		this.scroll = scroll;
 	}

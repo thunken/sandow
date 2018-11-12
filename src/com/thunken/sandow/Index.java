@@ -49,45 +49,37 @@ import lombok.NonNull;
  * A collection backed by an Elasticsearch index.
  *
  * <p>
- * A note on terminology: this interface bridges the Java Collections Framework
- * (where a <i>collection</i> represents a group of objects known as its
- * <i>elements</i>) and Elasticsearch (where an <i>index</i> represents a group
- * of objects known as <i>documents</i>). The code and the documentation of this
- * interface use the terminology of the Java Collections Framework.
+ * A note on terminology: this interface bridges the Java Collections Framework (where a <i>collection</i> represents a
+ * group of objects known as its <i>elements</i>) and Elasticsearch (where an <i>index</i> represents a group of objects
+ * known as <i>documents</i>). The code and the documentation of this interface use the terminology of the Java
+ * Collections Framework.
  *
  * <p>
  * Design principles:
  * <ul>
- * <li>Interoperability: this interface puts no bounds on the type argument
- * {@code <E>};
- * <li>Minimalism: this interface provides reasonable implementations for most
- * methods using default methods rather than companion abstract classes.
+ * <li>Interoperability: this interface puts no bounds on the type argument {@code <E>};
+ * <li>Minimalism: this interface provides reasonable implementations for most methods using default methods rather than
+ * companion abstract classes.
  * </ul>
  *
  * <p>
- * An index contains no duplicate elements. More formally, an index contains no
- * pair of elements <code>e1</code> and <code>e2</code> such that
- * <code>index.getId(e1).equals(index.getId(e2))</code>. Additionally, an index
- * does not allow null elements.
+ * An index contains no duplicate elements. More formally, an index contains no pair of elements <code>e1</code> and
+ * <code>e2</code> such that <code>index.getId(e1).equals(index.getId(e2))</code>. Additionally, an index does not allow
+ * null elements.
  *
  * <p>
- * Contrary to what is still possible as of Elasticsearch 5.4, this class
- * removes support for querying multiple types in a single index. More
- * precisely, an {@code Index} contains elements of a single type {@code <E>}
- * (see <a href="https://www.elastic.co/blog/index-vs-type">Index vs. Type</a>
- * and <a href="https://github.com/elastic/elasticsearch/issues/15613">Remove
- * support for types?</a> for discussions of the issue). Attempting to query the
- * presence of an ineligible element shall throw an exception, typically
- * {@link NullPointerException} or {@link ClassCastException}. Furthermore, by
- * default, the name of the index in Elasticsearch shall be equal to the
- * elements' type in the index, which is itself derived from the lowercased
+ * Contrary to what is still possible as of Elasticsearch 5.4, this class removes support for querying multiple types in
+ * a single index. More precisely, an {@code Index} contains elements of a single type {@code <E>} (see
+ * <a href="https://www.elastic.co/blog/index-vs-type">Index vs. Type</a> and
+ * <a href="https://github.com/elastic/elasticsearch/issues/15613">Remove support for types?</a> for discussions of the
+ * issue). Attempting to query the presence of an ineligible element shall throw an exception, typically
+ * {@link NullPointerException} or {@link ClassCastException}. Furthermore, by default, the name of the index in
+ * Elasticsearch shall be equal to the elements' type in the index, which is itself derived from the lowercased
  * {@link Class#getSimpleName()} of the elements' class.
  *
- * @implSpec The default method implementations do not apply any synchronization
- *           protocol, and all operations performed with a {@code Client} are
- *           asynchronous by nature. If an {@code Index} implementation has a
- *           specific synchronization protocol, then it must override default
- *           implementations to apply that protocol.
+ * @implSpec The default method implementations do not apply any synchronization protocol, and all operations performed
+ *           with a {@code Client} are asynchronous by nature. If an {@code Index} implementation has a specific
+ *           synchronization protocol, then it must override default implementations to apply that protocol.
  *
  * @param <E>
  *            the type of elements in this collection
@@ -203,11 +195,9 @@ public interface Index<E, C extends Client> extends Collection<E> {
 	C getClient();
 
 	/**
-	 * Return the {@code Class} object representing the element type of this
-	 * collection.
+	 * Return the {@code Class} object representing the element type of this collection.
 	 *
-	 * @return the {@code Class} object representing the element type of this
-	 *         collection
+	 * @return the {@code Class} object representing the element type of this collection
 	 */
 	Class<E> getElementClass();
 
@@ -220,8 +210,7 @@ public interface Index<E, C extends Client> extends Collection<E> {
 	 * Return the unique {@code String} ID of the given element.
 	 *
 	 * @param element
-	 *            an object of type {@code <E>}, that may or may not be part of
-	 *            this collection
+	 *            an object of type {@code <E>}, that may or may not be part of this collection
 	 * @return the unique id of the given element
 	 */
 	String getId(@NonNull E element);
@@ -251,8 +240,7 @@ public interface Index<E, C extends Client> extends Collection<E> {
 	/**
 	 * Return the type of this collection's elements in Elasticsearch.
 	 *
-	 * @implSpec The default implementation gets the return value from the
-	 *           lowercased {@link Class#getSimpleName()} of
+	 * @implSpec The default implementation gets the return value from the lowercased {@link Class#getSimpleName()} of
 	 *           {@link Index#getElementClass()}.
 	 *
 	 * @return the name of this collection's elements in Elasticsearch
@@ -267,11 +255,9 @@ public interface Index<E, C extends Client> extends Collection<E> {
 	}
 
 	/**
-	 * Return the content type of data returned by {@link Index#serialize} and
-	 * consumed by {@link Index#deserialize}.
+	 * Return the content type of data returned by {@link Index#serialize} and consumed by {@link Index#deserialize}.
 	 *
-	 * @return the content type of data returned by {@link Index#serialize} and
-	 *         consumed by {@link Index#deserialize}
+	 * @return the content type of data returned by {@link Index#serialize} and consumed by {@link Index#deserialize}
 	 */
 	XContentType getXContentType();
 
@@ -351,7 +337,7 @@ public interface Index<E, C extends Client> extends Collection<E> {
 	}
 
 	default ScrollingSearchHitSpliterator.ScrollingSearchHitSpliteratorBuilder prepareScrollingSpliterator() {
-		return ScrollingSearchHitSpliterator.builder().scroll(getScroll()).size(getPageSize());
+		return ScrollingSearchHitSpliterator.builder().client(getClient()).scroll(getScroll()).size(getPageSize());
 	}
 
 	default SearchRequestBuilder prepareSearch() {
@@ -436,13 +422,12 @@ public interface Index<E, C extends Client> extends Collection<E> {
 	}
 
 	/**
-	 * Returns a sequential {@code Stream} with a subset of this collection as
-	 * its source, namely the elements that match the given search query.
+	 * Returns a sequential {@code Stream} with a subset of this collection as its source, namely the elements that
+	 * match the given search query.
 	 *
 	 * @param queryBuilder
 	 *            the search query to execute
-	 * @return a sequential {@code Stream} over the elements in this collection
-	 *         that
+	 * @return a sequential {@code Stream} over the elements in this collection that
 	 */
 	default Stream<E> stream(final QueryBuilder queryBuilder) {
 		return streamSearchHits(queryBuilder).map(this::deserializeOrEmpty).filter(Optional::isPresent)

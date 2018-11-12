@@ -448,7 +448,7 @@ public interface Index<E, C extends Client> extends Collection<E> {
 
 	default Stream<SearchHit> streamSearchHits(final QueryBuilder queryBuilder) {
 		return StreamSupport.stream(
-				prepareSearchAfterSpliterator().searchRequest(prepareSearch().setQuery(queryBuilder)).build(), false);
+				prepareScrollingSpliterator().searchRequest(prepareSearch().setQuery(queryBuilder)).build(), false);
 	}
 
 	/**

@@ -23,6 +23,6 @@ And then add the dependency:
 	<dependency>
 	    <groupId>com.github.thunken</groupId>
 	    <artifactId>sandow</artifactId>
-	    <version>v1.0.1</version>
+	    <version>1.0.1</version>
 	</dependency>
 ```

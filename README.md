@@ -2,6 +2,10 @@
 
 `sandow` bridges the Java Collections Framework and Elasticsearch indices.
 
+## Deprecation notice
+
+**In light of recent developments with Elasticsearch's [Java High Level REST Client](https://www.elastic.co/guide/en/elasticsearch/client/java-rest/master/java-rest-high.html) and the shutdown of [Ironsift](https://ironsift.com/), this library is no longer maintained.**
+
 ## Latest release
 
 [![Release](https://jitpack.io/v/thunken/sandow.svg?style=flat-square)](https://github.com/thunken/sandow/releases)
